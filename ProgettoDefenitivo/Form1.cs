@@ -17,9 +17,9 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using static System.Windows.Forms.LinkLabel;
 using System.Diagnostics;
+using System.Windows.Automation;
 using ScrapySharp.Network;
 using OpenQA.Selenium.Support.UI;
- 
 using ScrapySharp.Extensions;
 using System.Net;
 
@@ -32,6 +32,12 @@ namespace ProgettoDefenitivo
 
     {
 
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        const uint SWP_NOSIZE = 0x0001;
+        const uint SWP_NOMOVE = 0x0002;
+        const uint SWP_NOACTIVATE = 0x0010;
 
         Dictionary<string, string> countries = new Dictionary<string, string>();
 
@@ -59,7 +65,7 @@ namespace ProgettoDefenitivo
             listView1.Visible = false;
 
             // Associa l'evento del clic alla TextBox
-            textBox1.Click += new EventHandler(textBox1_Click);
+          txtPaese.Click += new EventHandler(txtPaese_Click_1);
 
 
 
@@ -94,9 +100,13 @@ namespace ProgettoDefenitivo
         }
 
 
+ private void tabPage2_Resize_1(object sender, EventArgs e)
+        {
+            pictureVolo.Size = tabPage2.Size;
+        }
+    
 
-
-
+       
 
 
 
@@ -370,10 +380,10 @@ namespace ProgettoDefenitivo
 
         
 
-private void textBox1_TextChanged_1(object sender, EventArgs e)
+private void txtPaese_TextChanged_1(object sender, EventArgs e)
         {
  listView1.Items.Clear();
-            string searchText = textBox1.Text.ToLower(); // Testo di ricerca in minuscolo
+            string searchText = txtPaese.Text.ToLower(); // Testo di ricerca in minuscolo
 
             foreach (var airport in airports)
             {
@@ -385,107 +395,256 @@ private void textBox1_TextChanged_1(object sender, EventArgs e)
                 }
             }
         }
-        public void textBox1_Click(object sender, EventArgs e)
-        {
-            // Mostra la ListView quando viene cliccata la TextBox
-            listView1.Visible = true;
-        }
+       
         public void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Mostra il testo selezionato nella TextBox
             if (listView1.SelectedItems.Count > 0)
             {
-                textBox1.Text = listView1.SelectedItems[0].Text;
+                txtPaese.Text = listView1.SelectedItems[0].Text;
             }
         }
 
 
 
+  private void txtPaese_Click_1(object sender, EventArgs e)
+        {
+// Mostra la ListView quando viene cliccata la TextBox
+            listView1.Visible = true;
+        }
 
 
-       
 
-      
-//private void dtPartenza_ValueChanged_1(object sender, EventArgs e)
-//        {
-// DateTime selectedDate = dtPartenza.Value;
 
-//            // Formatta la data nel formato desiderato (anno-mese-giorno) utilizzando la cultura "en-US"
-//            string formattedDate = selectedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-//            if (selectedDate < DateTime.Now.AddDays(1))
-//            {
-//                lbErroreData.Text = "Il dato deve essere dopo domani.";
-//                //btnInformazioni.Enabled = false;
+        //private void dtPartenza_ValueChanged_1(object sender, EventArgs e)
+        //        {
+        // DateTime selectedDate = dtPartenza.Value;
 
-//            }
-//            else
-//            {
-//                lbErroreData.Text = "";
-//            }
-//        }
+        //            // Formatta la data nel formato desiderato (anno-mese-giorno) utilizzando la cultura "en-US"
+        //            string formattedDate = selectedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+        //            if (selectedDate < DateTime.Now.AddDays(1))
+        //            {
+        //                lbErroreData.Text = "Il dato deve essere dopo domani.";
+        //                //btnInformazioni.Enabled = false;
 
-//        private void dtRitorno_ValueChanged_1(object sender, EventArgs e)
-//        {
-//DateTime selectedDate2 = dtRitorno.Value;
+        //            
+        //            else
+        //            {
+        //                lbErroreData.Text = "";
+        //            }
+        //        }
 
-//            // Formatta la data nel formato desiderato (anno-mese-giorno) utilizzando la cultura "en-US"
-//            string formattedDate2 = selectedDate2.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+        //        private void dtRitorno_ValueChanged_1(object sender, EventArgs e)
+        //        {
+        //DateTime selectedDate2 = dtRitorno.Value;
 
-//            if (selectedDate2 < DateTime.Now.AddDays(1))
-//            {
+        //            // Formatta la data nel formato desiderato (anno-mese-giorno) utilizzando la cultura "en-US"
+        //            string formattedDate2 = selectedDate2.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
 
-//            }
-//        }
+        //            if (selectedDate2 < DateTime.Now.AddDays(1))
+        //            {
 
-      
+        //            }
+        //        }
 
+
+
+
+        //private void btnInformazioni_Click(object sender, EventArgs e)
+
+        //{
+
+        //    DateTime selectedDate = dtPartenza.Value;
+        //    string formattedDate = selectedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+        //    Console.WriteLine("formattedDate: " + formattedDate); // Aggiungi questa linea per il debug
+            
+
+
+        //    // Verifica che la data di partenza non sia mai minore di un giorno in più rispetto ad oggi
+        //    if (selectedDate < DateTime.Now.AddDays(1))
+        //    {
+        //        lbErroreData.Text = "Il dato deve essere dopo domani.";
+        //       return;
+        //    }
+        //    else
+        //    {
+        //        lbErroreData.Text = "";
+              
+        //    }
+
+        //    //RITORNO
+        //    DateTime selectedDate2 = dtRitorno.Value;
+        //    string formattedDate2 = selectedDate2.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+        //    Console.WriteLine("formattedDate: " + formattedDate2); // Aggiungi questa linea per il debug
+
+
+        //    //// Verifica che la data di ritorno non sia mai minore della data di partenza
+        //    if (selectedDate2 < selectedDate)
+        //    {
+        //        lbErroreData.Text = "Il dato deve essere dopo la data di inizio";
+        //     return;
+        //    }
+        //    else
+        //    {
+        //        lbErroreData.Text = "";
+        //    }
+
+
+
+
+
+        //    // Verifica se è stato selezionato un aeroporto
+        //    if (listView1.SelectedItems.Count > 0)
+        //    {
+        //        // Ottieni il nome e il codice dell'aeroporto selezionato
+        //        partenzaAeroporto = listView1.SelectedItems[0].Text;
+        //        airportCode = listView1.SelectedItems[0].SubItems[1].Text;
+
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Seleziona un aeroporto prima di procedere.");
+        //        return;
+        //    }
+        //    //  string message3 = $"Informazioni:\nPartenza: {airportCode}\nBudget: {budget}\nData di Andata: {formattedDate}\nData di Ritorno: {formattedDate2}";
+        //    // MessageBox.Show(message3, "Dettagli Viaggio", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        //    // C$"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate2}&budget=150&trip-type-category={tipoViaggio}");
+
+        //    // txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate2}&budget=150&trip-type-category={tipoViaggio}";
+
+           
+
+        //        if (rbSpecifica.Checked)
+        //        {
+
+        //            txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate}&budget=150"; 
+                
+        //        }
+        //        // Esegui questa parte se non è selezionato nessun elemento dalla ComboBox
+        //        if (rbIntervallo.Checked)
+        //        {
+
+        //            txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate2}&budget=150";
+
+        //        }
+
+
+
+        //    //MessageBox.Show(txtLink.Text);
+
+         
+
+        //    string urlScreenVolo = txtLink.Text;
+
+
+
+        //    ScrapingBrowser browser = new ScrapingBrowser();
+        //    browser.AllowAutoRedirect = true;
+        //    browser.AllowMetaRedirect = true;
+        //    // Inizializza il WebDriver di Chrome
+        //    ChromeOptions options = new ChromeOptions();
+        //    options.AddArgument("--window-position=-2000,-2000"); // Imposta la posizione della finestra fuori dallo schermo
+        //    IWebDriver driver = new ChromeDriver(options);
+
+        //    // Naviga verso la pagina web
+        //    driver.Navigate().GoToUrl(txtLink.Text);
+
+        //    try
+        //    {
+        //        //Trova il bottone tramite il selettore CSS, XPath o altri metodi di localizzazione
+        //        var buttonScreenVolo = driver.FindElement(By.CssSelector("div#cookie-popup-with-overlay"));
+        //        var buttonScreenVolo1 = buttonScreenVolo.FindElement(By.CssSelector("div.cookie-popup-with-overlay__box"));
+        //        var buttonScreenVolo2 = buttonScreenVolo1.FindElement(By.CssSelector("div.cookie-popup-with-overlay__buttons"));
+        //        var buttonScreenVolo3 = buttonScreenVolo2.FindElement(By.CssSelector("button.cookie-popup-with-overlay__button"));
+
+
+
+        //        buttonScreenVolo3.Click();
+
+
+
+        //        IWebElement divElement = driver.FindElement(By.XPath("//div[@class='FR']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+        //        IWebElement child = divElement.FindElement(By.XPath(".//main[@ui-view='mainView']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+        //        IWebElement child1 = child.FindElement(By.XPath(".//div[@class='farefinder-expanded']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+        //        IWebElement child2 = child1.FindElement(By.XPath(".//div[@class='container results-container']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+
+        //        // Ora puoi catturare uno screenshot del quinto figlio div
+        //        Screenshot screenshot = ((ITakesScreenshot)child2).GetScreenshot();
+        //        screenshot.SaveAsFile($"div_screenshot{num}.png");
+        //    }
+
+        //    catch (NoSuchElementException ex)
+        //    {
+        //        Console.WriteLine("Uno dei div non è stato trovato: " + ex.Message);
+        //    }
+
+        //    finally
+        //    {
+        //        // Chiudi il WebDriver
+        //        driver.Quit();
+        //        tabControl.SelectedIndex = 1;
+        //        tabPage2.Visible = true;
+        //        pictureVolo.Image = Image.FromFile($"div_screenshot{num}.png");
+        //        num++;
+        //    }
+
+           
+
+        //}
+private void btnInformazioni_Click(object sender, EventArgs e)
         
 
-
- private void btnInformazioni_Click(object sender, EventArgs e)
         {
-
-            //ANDATA
+            // Ottieni la data di partenza
             DateTime selectedDate = dtPartenza.Value;
             string formattedDate = selectedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
             Console.WriteLine("formattedDate: " + formattedDate); // Aggiungi questa linea per il debug
-            string message = $"La data formattata è: {formattedDate}";
-            // MessageBox.Show(message, "Data Formattata", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            if (selectedDate < DateTime.Now.AddDays(1))
-            {
-                lbErroreData.Text = "Il dato deve essere dopo domani.";
-                //btnInformazioni.Enabled = false;
 
-            }
-            else
-            {
-                lbErroreData.Text = "";
-            }
+            // Verifica che la data di partenza non sia mai minore di un giorno in più rispetto ad oggi
+          
 
-
-
-
-
-            //RITORNO
+            // Ottieni la data di ritorno
             DateTime selectedDate2 = dtRitorno.Value;
             string formattedDate2 = selectedDate2.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
             Console.WriteLine("formattedDate: " + formattedDate2); // Aggiungi questa linea per il debug
-            string message2 = $"La data formattata è: {formattedDate2}";
-            // MessageBox.Show(message2, "Data Formattata", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            if (selectedDate2 < selectedDate)
+
+       if (rbSpecifica.Checked==true)
+       {
+                if (selectedDate < DateTime.Now.AddDays(1))
+                {
+                    lbErroreData.Text = "La data di partenza deve essere dopo domani.";
+                    return;
+                }
+                else
+                {
+                    lbErroreData.Text = "";
+                }
+
+
+       }
+            if(rbIntervallo.Checked==true)
             {
-                lbErroreData.Text = "Il dato deve essere dopo la data di inizio";
-                //btnInformazioni.Enabled = false;
-
+                if (selectedDate < DateTime.Now.AddDays(1))
+                {
+                    lbErroreData.Text = "La data di partenza deve essere dopo domani.";
+                    return;
+                }
+                else
+                {
+                    lbErroreData.Text = "";
+                }
+                if (selectedDate2 < selectedDate)
+                {
+                    lbErroreData.Text = "La data di ritorno deve essere dopo la data di partenza";
+                    return;
+                }
+                else
+                {
+                    lbErroreData.Text = "";
+                }
             }
-            else
-            {
-                lbErroreData.Text = "";
-            }
-
-
-
-
+       //
 
             // Verifica se è stato selezionato un aeroporto
             if (listView1.SelectedItems.Count > 0)
@@ -493,43 +652,38 @@ private void textBox1_TextChanged_1(object sender, EventArgs e)
                 // Ottieni il nome e il codice dell'aeroporto selezionato
                 partenzaAeroporto = listView1.SelectedItems[0].Text;
                 airportCode = listView1.SelectedItems[0].SubItems[1].Text;
-
             }
             else
             {
                 MessageBox.Show("Seleziona un aeroporto prima di procedere.");
                 return;
             }
-            //  string message3 = $"Informazioni:\nPartenza: {airportCode}\nBudget: {budget}\nData di Andata: {formattedDate}\nData di Ritorno: {formattedDate2}";
-            // MessageBox.Show(message3, "Dettagli Viaggio", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // C$"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate2}&budget=150&trip-type-category={tipoViaggio}");
-
-            // txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate2}&budget=150&trip-type-category={tipoViaggio}";
-
-           
-
-                if (rbSpecifica.Checked)
-                {
-
-                    txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate}&budget=150"; 
-                
-                }
-                // Esegui questa parte se non è selezionato nessun elemento dalla ComboBox
-                if (rbIntervallo.Checked)
-                {
-
-                    txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate2}&budget=150";
-
-                }
-
-
-
-            //MessageBox.Show(txtLink.Text);
-
+            // Costruisci il link in base alle opzioni selezionate
          
+            if (rbSpecifica.Checked)
+            {
+                txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate}&budget=150";
+            }
+            else if (rbIntervallo.Checked)
+            {
+                txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate2}&budget=150";
+            }
+            else
+            {
+                // Gestisci altri casi se necessario
+                return;
+            }
 
-            string urlScreenVolo = (txtLink.Text);
+            // Esegui il resto del codice per il web scraping e l'elaborazione dell'immagine
+            EseguiScraping(txtLink.Text);
+        }
+
+        private void EseguiScraping(string url)
+        {
+            // Esegui il web scraping e l'elaborazione dell'immagine qui
+
+            string urlScreenVolo = txtLink.Text;
 
 
 
@@ -538,7 +692,7 @@ private void textBox1_TextChanged_1(object sender, EventArgs e)
             browser.AllowMetaRedirect = true;
             // Inizializza il WebDriver di Chrome
             ChromeOptions options = new ChromeOptions();
-            options.AddArgument("--start-maximized"); // Massimizza la finestra del browser
+            options.AddArgument("--window-position=-2000,-2000"); // Imposta la posizione della finestra fuori dallo schermo
             IWebDriver driver = new ChromeDriver(options);
 
             // Naviga verso la pagina web
@@ -582,13 +736,8 @@ private void textBox1_TextChanged_1(object sender, EventArgs e)
                 pictureVolo.Image = Image.FromFile($"div_screenshot{num}.png");
                 num++;
             }
-
-           
-
         }
-        
 
-        
 
         private void txtPartenza_Click(object sender, EventArgs e)
         {
@@ -609,6 +758,7 @@ private void textBox1_TextChanged_1(object sender, EventArgs e)
                 dtPartenza.Visible = true;
                 
             }
+
           
         }
         private void rbIntervallo_CheckedChanged(object sender, EventArgs e)
@@ -759,6 +909,8 @@ private void textBox1_TextChanged_1(object sender, EventArgs e)
             }
 
         }
+
+      
     }
 
 

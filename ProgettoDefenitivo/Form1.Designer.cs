@@ -30,6 +30,9 @@
         {
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.lbErroreData = new System.Windows.Forms.Label();
             this.txtLink = new System.Windows.Forms.TextBox();
             this.btnInformazioni = new System.Windows.Forms.Button();
@@ -41,7 +44,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.txtPartenza = new System.Windows.Forms.TextBox();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtPaese = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pictureVolo = new System.Windows.Forms.PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -49,14 +52,11 @@
             this.pictureBoxMeteo = new System.Windows.Forms.PictureBox();
             this.txtMeteo = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.pictureBoxCartina = new System.Windows.Forms.PictureBox();
-            this.pictureBoxPaesaggio = new System.Windows.Forms.PictureBox();
-            this.btnCartina = new System.Windows.Forms.Button();
-            this.btnPaesaggio = new System.Windows.Forms.Button();
             this.txtCitta = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.btnPaesaggio = new System.Windows.Forms.Button();
+            this.btnCartina = new System.Windows.Forms.Button();
+            this.pictureBoxPaesaggio = new System.Windows.Forms.PictureBox();
+            this.pictureBoxCartina = new System.Windows.Forms.PictureBox();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panelPartenza.SuspendLayout();
@@ -65,8 +65,8 @@
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMeteo)).BeginInit();
             this.tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCartina)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPaesaggio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCartina)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl
@@ -76,6 +76,7 @@
             this.tabControl.Controls.Add(this.tabPage3);
             this.tabControl.Controls.Add(this.tabPage4);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -94,7 +95,7 @@
             this.tabPage1.Controls.Add(this.textBox2);
             this.tabPage1.Controls.Add(this.txtPartenza);
             this.tabPage1.Controls.Add(this.listView1);
-            this.tabPage1.Controls.Add(this.textBox1);
+            this.tabPage1.Controls.Add(this.txtPaese);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -102,6 +103,33 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "VOLO";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(658, 41);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(57, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "PARTI IL :";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(422, 41);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(87, 13);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "DESTINAZIONE";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(142, 41);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(68, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "PARTENZA:";
             // 
             // lbErroreData
             // 
@@ -207,13 +235,14 @@
             this.listView1.TabIndex = 1;
             this.listView1.UseCompatibleStateImageBehavior = false;
             // 
-            // textBox1
+            // txtPaese
             // 
-            this.textBox1.Location = new System.Drawing.Point(128, 57);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
+            this.txtPaese.Location = new System.Drawing.Point(125, 57);
+            this.txtPaese.Name = "txtPaese";
+            this.txtPaese.Size = new System.Drawing.Size(100, 20);
+            this.txtPaese.TabIndex = 0;
+            this.txtPaese.Click += new System.EventHandler(this.txtPaese_Click_1);
+            this.txtPaese.TextChanged += new System.EventHandler(this.txtPaese_TextChanged_1);
             // 
             // tabPage2
             // 
@@ -225,12 +254,13 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "SCREEN VOLO";
             this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPage2.Resize += new System.EventHandler(this.tabPage2_Resize_1);
             // 
             // pictureVolo
             // 
-            this.pictureVolo.Location = new System.Drawing.Point(29, 33);
+            this.pictureVolo.Location = new System.Drawing.Point(8, 30);
             this.pictureVolo.Name = "pictureVolo";
-            this.pictureVolo.Size = new System.Drawing.Size(1370, 688);
+            this.pictureVolo.Size = new System.Drawing.Size(1447, 747);
             this.pictureVolo.TabIndex = 0;
             this.pictureVolo.TabStop = false;
             // 
@@ -287,31 +317,12 @@
             this.tabPage4.Text = "CARTINA E PAESAGGIO";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // pictureBoxCartina
+            // txtCitta
             // 
-            this.pictureBoxCartina.Location = new System.Drawing.Point(15, 129);
-            this.pictureBoxCartina.Name = "pictureBoxCartina";
-            this.pictureBoxCartina.Size = new System.Drawing.Size(639, 288);
-            this.pictureBoxCartina.TabIndex = 0;
-            this.pictureBoxCartina.TabStop = false;
-            // 
-            // pictureBoxPaesaggio
-            // 
-            this.pictureBoxPaesaggio.Location = new System.Drawing.Point(730, 131);
-            this.pictureBoxPaesaggio.Name = "pictureBoxPaesaggio";
-            this.pictureBoxPaesaggio.Size = new System.Drawing.Size(693, 273);
-            this.pictureBoxPaesaggio.TabIndex = 1;
-            this.pictureBoxPaesaggio.TabStop = false;
-            // 
-            // btnCartina
-            // 
-            this.btnCartina.Location = new System.Drawing.Point(295, 93);
-            this.btnCartina.Name = "btnCartina";
-            this.btnCartina.Size = new System.Drawing.Size(119, 30);
-            this.btnCartina.TabIndex = 2;
-            this.btnCartina.Text = "CARTINA";
-            this.btnCartina.UseVisualStyleBackColor = true;
-            this.btnCartina.Click += new System.EventHandler(this.btnCartina_Click);
+            this.txtCitta.Location = new System.Drawing.Point(603, 39);
+            this.txtCitta.Name = "txtCitta";
+            this.txtCitta.Size = new System.Drawing.Size(187, 20);
+            this.txtCitta.TabIndex = 4;
             // 
             // btnPaesaggio
             // 
@@ -323,39 +334,31 @@
             this.btnPaesaggio.UseVisualStyleBackColor = true;
             this.btnPaesaggio.Click += new System.EventHandler(this.btnPaesaggio_Click);
             // 
-            // txtCitta
+            // btnCartina
             // 
-            this.txtCitta.Location = new System.Drawing.Point(603, 39);
-            this.txtCitta.Name = "txtCitta";
-            this.txtCitta.Size = new System.Drawing.Size(187, 20);
-            this.txtCitta.TabIndex = 4;
+            this.btnCartina.Location = new System.Drawing.Point(295, 93);
+            this.btnCartina.Name = "btnCartina";
+            this.btnCartina.Size = new System.Drawing.Size(119, 30);
+            this.btnCartina.TabIndex = 2;
+            this.btnCartina.Text = "CARTINA";
+            this.btnCartina.UseVisualStyleBackColor = true;
+            this.btnCartina.Click += new System.EventHandler(this.btnCartina_Click);
             // 
-            // label1
+            // pictureBoxPaesaggio
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(142, 41);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 13);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "PARTENZA:";
+            this.pictureBoxPaesaggio.Location = new System.Drawing.Point(730, 131);
+            this.pictureBoxPaesaggio.Name = "pictureBoxPaesaggio";
+            this.pictureBoxPaesaggio.Size = new System.Drawing.Size(693, 273);
+            this.pictureBoxPaesaggio.TabIndex = 1;
+            this.pictureBoxPaesaggio.TabStop = false;
             // 
-            // label2
+            // pictureBoxCartina
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(422, 41);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(87, 13);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "DESTINAZIONE";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(658, 41);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(57, 13);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "PARTI IL :";
+            this.pictureBoxCartina.Location = new System.Drawing.Point(15, 129);
+            this.pictureBoxCartina.Name = "pictureBoxCartina";
+            this.pictureBoxCartina.Size = new System.Drawing.Size(639, 288);
+            this.pictureBoxCartina.TabIndex = 0;
+            this.pictureBoxCartina.TabStop = false;
             // 
             // Form1
             // 
@@ -377,8 +380,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMeteo)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCartina)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPaesaggio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCartina)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -389,7 +392,7 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtPaese;
         private System.Windows.Forms.RadioButton rbIntervallo;
         private System.Windows.Forms.RadioButton rbSpecifica;
         private System.Windows.Forms.TextBox textBox2;
