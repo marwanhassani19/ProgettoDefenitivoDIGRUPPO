@@ -22,7 +22,7 @@ using ScrapySharp.Network;
 using OpenQA.Selenium.Support.UI;
 using ScrapySharp.Extensions;
 using System.Net;
-
+using System.Xml.Xsl;
 
 namespace ProgettoDefenitivo
 {
@@ -54,7 +54,7 @@ namespace ProgettoDefenitivo
         public Form1()
         {
             InitializeComponent();
-
+                    
             PopulateAirports();
             InitializeListView();
             this.WindowState = FormWindowState.Maximized;
@@ -65,23 +65,16 @@ namespace ProgettoDefenitivo
             listView1.Visible = false;
 
             // Associa l'evento del clic alla TextBox
-          txtPaese.Click += new EventHandler(txtPaese_Click_1);
-
-
+            txtPaese.Click += new EventHandler(txtPaese_Click_1);
 
 
             //comboBox2.SelectedIndexChanged += new EventHandler(comboBox2_SelectedIndexChanged_1);
-
-           
-
-
 
 
             rbSpecifica.Visible = false;
 
             rbIntervallo.Visible = false;
             panelPartenza.Visible = false;
-
 
             txtPartenza.Click += new EventHandler(txtPartenza_Click);
 
@@ -91,23 +84,31 @@ namespace ProgettoDefenitivo
             dtPartenza.Visible = false;
             dtRitorno.Visible = false;
 
-            tabPage2.Visible = false;
-
+            tabPage5.Visible = false;
 
             dtPartenza.Value = DateTime.Now.AddDays(2);
             dtRitorno.Value = DateTime.Now.AddDays(3);
 
         }
 
+        private struct voli
+        {
+            public string Nome;
+            public string LuogoPartenza;
+            public string LuogoArrivo;
+            public string NumeroVolo;
+            public float Posto;
+            public string Gate;
+        }
 
- private void tabPage2_Resize_1(object sender, EventArgs e)
+        private voli[] elevoli = new voli[100];      // CREO ELE E DICHIARO NUM
+        
+
+
+        private void tabPage2_Resize_1(object sender, EventArgs e)
         {
             pictureVolo.Size = tabPage2.Size;
         }
-    
-
-       
-
 
 
         public void PopulateAirports()
@@ -357,6 +358,8 @@ namespace ProgettoDefenitivo
 
 
         }
+
+
         public void InitializeListView()
         {
             // Imposta le proprietà della ListView
@@ -377,12 +380,9 @@ namespace ProgettoDefenitivo
         }
 
 
-
-        
-
-private void txtPaese_TextChanged_1(object sender, EventArgs e)
+        private void txtPaese_TextChanged_1(object sender, EventArgs e)
         {
- listView1.Items.Clear();
+            listView1.Items.Clear();
             string searchText = txtPaese.Text.ToLower(); // Testo di ricerca in minuscolo
 
             foreach (var airport in airports)
@@ -395,7 +395,8 @@ private void txtPaese_TextChanged_1(object sender, EventArgs e)
                 }
             }
         }
-       
+
+
         public void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Mostra il testo selezionato nella TextBox
@@ -406,10 +407,9 @@ private void txtPaese_TextChanged_1(object sender, EventArgs e)
         }
 
 
-
-  private void txtPaese_Click_1(object sender, EventArgs e)
+        private void txtPaese_Click_1(object sender, EventArgs e)
         {
-// Mostra la ListView quando viene cliccata la TextBox
+            // Mostra la ListView quando viene cliccata la TextBox
             listView1.Visible = true;
         }
 
@@ -457,7 +457,7 @@ private void txtPaese_TextChanged_1(object sender, EventArgs e)
         //    DateTime selectedDate = dtPartenza.Value;
         //    string formattedDate = selectedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
         //    Console.WriteLine("formattedDate: " + formattedDate); // Aggiungi questa linea per il debug
-            
+
 
 
         //    // Verifica che la data di partenza non sia mai minore di un giorno in più rispetto ad oggi
@@ -469,7 +469,7 @@ private void txtPaese_TextChanged_1(object sender, EventArgs e)
         //    else
         //    {
         //        lbErroreData.Text = "";
-              
+
         //    }
 
         //    //RITORNO
@@ -513,13 +513,13 @@ private void txtPaese_TextChanged_1(object sender, EventArgs e)
 
         //    // txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate2}&budget=150&trip-type-category={tipoViaggio}";
 
-           
+
 
         //        if (rbSpecifica.Checked)
         //        {
 
         //            txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate}&budget=150"; 
-                
+
         //        }
         //        // Esegui questa parte se non è selezionato nessun elemento dalla ComboBox
         //        if (rbIntervallo.Checked)
@@ -533,7 +533,7 @@ private void txtPaese_TextChanged_1(object sender, EventArgs e)
 
         //    //MessageBox.Show(txtLink.Text);
 
-         
+
 
         //    string urlScreenVolo = txtLink.Text;
 
@@ -589,12 +589,13 @@ private void txtPaese_TextChanged_1(object sender, EventArgs e)
         //        num++;
         //    }
 
-           
+
 
         //}
-private void btnInformazioni_Click(object sender, EventArgs e)
-        
 
+        //--------------------------------------------------------------------------------------------------------------------------------------------
+
+        private void btnInformazioni_Click(object sender, EventArgs e)
         {
             // Ottieni la data di partenza
             DateTime selectedDate = dtPartenza.Value;
@@ -602,15 +603,15 @@ private void btnInformazioni_Click(object sender, EventArgs e)
             Console.WriteLine("formattedDate: " + formattedDate); // Aggiungi questa linea per il debug
 
             // Verifica che la data di partenza non sia mai minore di un giorno in più rispetto ad oggi
-          
+
 
             // Ottieni la data di ritorno
             DateTime selectedDate2 = dtRitorno.Value;
             string formattedDate2 = selectedDate2.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
             Console.WriteLine("formattedDate: " + formattedDate2); // Aggiungi questa linea per il debug
 
-       if (rbSpecifica.Checked==true)
-       {
+            if (rbSpecifica.Checked == true)
+            {
                 if (selectedDate < DateTime.Now.AddDays(1))
                 {
                     lbErroreData.Text = "La data di partenza deve essere dopo domani.";
@@ -622,8 +623,8 @@ private void btnInformazioni_Click(object sender, EventArgs e)
                 }
 
 
-       }
-            if(rbIntervallo.Checked==true)
+            }
+            if (rbIntervallo.Checked == true)
             {
                 if (selectedDate < DateTime.Now.AddDays(1))
                 {
@@ -644,7 +645,7 @@ private void btnInformazioni_Click(object sender, EventArgs e)
                     lbErroreData.Text = "";
                 }
             }
-       //
+            //
 
             // Verifica se è stato selezionato un aeroporto
             if (listView1.SelectedItems.Count > 0)
@@ -660,7 +661,7 @@ private void btnInformazioni_Click(object sender, EventArgs e)
             }
 
             // Costruisci il link in base alle opzioni selezionate
-         
+
             if (rbSpecifica.Checked)
             {
                 txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate}&budget=150";
@@ -678,6 +679,8 @@ private void btnInformazioni_Click(object sender, EventArgs e)
             // Esegui il resto del codice per il web scraping e l'elaborazione dell'immagine
             EseguiScraping(txtLink.Text);
         }
+
+        //--------------------------------------------------------------------------------------------------------------------------------------------
 
         private void EseguiScraping(string url)
         {
@@ -731,8 +734,8 @@ private void btnInformazioni_Click(object sender, EventArgs e)
             {
                 // Chiudi il WebDriver
                 driver.Quit();
-                tabControl.SelectedIndex = 1;
-                tabPage2.Visible = true;
+                tabControl.SelectedIndex = 4;
+                tabPage5.Visible = true;
                 pictureVolo.Image = Image.FromFile($"div_screenshot{num}.png");
                 num++;
             }
@@ -747,26 +750,24 @@ private void btnInformazioni_Click(object sender, EventArgs e)
         }
 
 
-
-       
-
-
         private void rbSpecifica_CheckedChanged(object sender, EventArgs e)
         {
             if (rbSpecifica.Checked)
             {
                 dtPartenza.Visible = true;
-                
+
             }
 
-          
+
         }
+
+
         private void rbIntervallo_CheckedChanged(object sender, EventArgs e)
         {
             if (rbIntervallo.Checked)
             {
                 dtPartenza.Visible = true;
-              dtRitorno.Visible = true;
+                dtRitorno.Visible = true;
 
             }
             else
@@ -776,67 +777,68 @@ private void btnInformazioni_Click(object sender, EventArgs e)
 
         }
 
-       
+        //--------------------------------------------------------------------------------------------------------------------------------------------
 
         private void btnMeteo_Click_1(object sender, EventArgs e)
         {
- var luogo = txtMeteo.Text;
-                string url = ($"https://www.3bmeteo.com/meteo/{luogo}");
+            var luogo = txtMeteo.Text;
+            string url = ($"https://www.3bmeteo.com/meteo/{luogo}");
 
-                ScrapingBrowser browser = new ScrapingBrowser();
-                browser.AllowAutoRedirect = true;
-                browser.AllowMetaRedirect = true;
+            ScrapingBrowser browser = new ScrapingBrowser();
+            browser.AllowAutoRedirect = true;
+            browser.AllowMetaRedirect = true;
 
-                // Inizializza il WebDriver di Chrome
-                ChromeOptions options = new ChromeOptions();
-                options.AddArgument("--start-maximized"); // Massimizza la finestra del browser
-                IWebDriver driver = new ChromeDriver(options);
+            // Inizializza il WebDriver di Chrome
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("--start-maximized"); // Massimizza la finestra del browser
+            IWebDriver driver = new ChromeDriver(options);
 
-                // Naviga verso la pagina web
-                driver.Navigate().GoToUrl($"https://www.3bmeteo.com/meteo/{luogo}");
+            // Naviga verso la pagina web
+            driver.Navigate().GoToUrl($"https://www.3bmeteo.com/meteo/{luogo}");
 
-                try
-                {
-                    // Trova il bottone tramite il selettore CSS, XPath o altri metodi di localizzazione
-                    var buttonMeteo = driver.FindElement(By.CssSelector("div#iubenda-cs-banner"));
-                    var buttonMeteo1 = buttonMeteo.FindElement(By.CssSelector("div.iubenda-cs-container"));
-                    var buttonMeteo2 = buttonMeteo1.FindElement(By.CssSelector("div.iubenda-cs-content"));
-                    var buttonMeteo3 = buttonMeteo2.FindElement(By.CssSelector("div.iubenda-cs-rationale"));
-                    var buttonMeteo4 = buttonMeteo3.FindElement(By.CssSelector("div.iubenda-cs-opt-group"));
-                    var buttonMeteo5 = buttonMeteo4.FindElement(By.CssSelector("div.iubenda-cs-opt-group-consent"));
-                    var buttonMeteo6 = buttonMeteo5.FindElement(By.CssSelector("button.iubenda-cs-accept-btn"));
-
-
-                    // Esegui il clic sul bottone
-                    buttonMeteo6.Click();
-
-                    IWebElement divElement = driver.FindElement(By.XPath("//div[@id='wrapper']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
-                    IWebElement child = divElement.FindElement(By.XPath(".//section[@id='main']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
-                    IWebElement child1 = child.FindElement(By.XPath(".//div[@class='box noMarg']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+            try
+            {
+                // Trova il bottone tramite il selettore CSS, XPath o altri metodi di localizzazione
+                var buttonMeteo = driver.FindElement(By.CssSelector("div#iubenda-cs-banner"));
+                var buttonMeteo1 = buttonMeteo.FindElement(By.CssSelector("div.iubenda-cs-container"));
+                var buttonMeteo2 = buttonMeteo1.FindElement(By.CssSelector("div.iubenda-cs-content"));
+                var buttonMeteo3 = buttonMeteo2.FindElement(By.CssSelector("div.iubenda-cs-rationale"));
+                var buttonMeteo4 = buttonMeteo3.FindElement(By.CssSelector("div.iubenda-cs-opt-group"));
+                var buttonMeteo5 = buttonMeteo4.FindElement(By.CssSelector("div.iubenda-cs-opt-group-consent"));
+                var buttonMeteo6 = buttonMeteo5.FindElement(By.CssSelector("button.iubenda-cs-accept-btn"));
 
 
-                    // Ora puoi catturare uno screenshot del quinto figlio div
-                    Screenshot screenshot = ((ITakesScreenshot)child1).GetScreenshot();
-                    screenshot.SaveAsFile($"div_screenshot2{num}.png");
-                }
+                // Esegui il clic sul bottone
+                buttonMeteo6.Click();
 
-                catch (NoSuchElementException ex)
-                {
-                    Console.WriteLine("Uno dei div non è stato trovato: " + ex.Message);
-                }
+                IWebElement divElement = driver.FindElement(By.XPath("//div[@id='wrapper']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+                IWebElement child = divElement.FindElement(By.XPath(".//section[@id='main']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+                IWebElement child1 = child.FindElement(By.XPath(".//div[@class='box noMarg']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
 
-                finally
-                {
-                    // Chiudi il WebDriver
-                    driver.Quit();
-                    pictureBoxMeteo.Image = Image.FromFile($"div_screenshot2{num}.png");
 
-                    num++;
-                
+                // Ora puoi catturare uno screenshot del quinto figlio div
+                Screenshot screenshot = ((ITakesScreenshot)child1).GetScreenshot();
+                screenshot.SaveAsFile($"div_screenshot2{num}.png");
             }
-       
+
+            catch (NoSuchElementException ex)
+            {
+                Console.WriteLine("Uno dei div non è stato trovato: " + ex.Message);
+            }
+
+            finally
+            {
+                // Chiudi il WebDriver
+                driver.Quit();
+                pictureBoxMeteo.Image = Image.FromFile($"div_screenshot2{num}.png");
+
+                num++;
+
+            }
+
         }
 
+        //--------------------------------------------------------------------------------------------------------------------------------------------
 
         private async void btnCartina_Click(object sender, EventArgs e)
         {
@@ -910,7 +912,109 @@ private void btnInformazioni_Click(object sender, EventArgs e)
 
         }
 
-      
+        //--------------------------------------------------------------------------------------------------------------------------------------------
+
+        private void btnIndicazioni_Click(object sender, EventArgs e)
+        {
+            var luogo = txtIndicazioni.Text;
+            string url = $"https://www.travel365.it/destinazioni/europa/italia/lombardia/{luogo}/";
+
+            ScrapingBrowser browser = new ScrapingBrowser();
+            browser.AllowAutoRedirect = true;
+            browser.AllowMetaRedirect = true;
+
+            // Inizializza il WebDriver di Chrome
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("--start-maximized"); // Massimizza la finestra del browser
+            IWebDriver driver = new ChromeDriver(options);
+
+            // Naviga verso la pagina web
+            driver.Navigate().GoToUrl($"https://www.travel365.it/destinazioni/europa/italia/lombardia/{luogo}/");
+
+            try
+            {
+                // Trova il bottone tramite il selettore CSS, XPath o altri metodi di localizzazione
+
+                var buttonIndicazioni = driver.FindElement(By.CssSelector("div.fc-consent-root"));
+                var buttonIndicazioni1 = buttonIndicazioni.FindElement(By.CssSelector("div.fc-dialog-container"));
+                var buttonIndicazioni2 = buttonIndicazioni1.FindElement(By.CssSelector("div.fc-dialog"));
+                var buttonIndicazioni3 = buttonIndicazioni2.FindElement(By.CssSelector("div.fc-footer-buttons-container"));
+                var buttonIndicazioni4 = buttonIndicazioni3.FindElement(By.CssSelector("div.fc-footer-buttons"));
+                var buttonIndicazioni5 = buttonIndicazioni4.FindElement(By.CssSelector("button.fc-button"));
+
+
+                // Esegui il clic sul bottone
+                buttonIndicazioni5.Click();
+
+                IWebElement divElement = driver.FindElement(By.XPath("//div[@id='content']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+                IWebElement child = divElement.FindElement(By.XPath(".//div[@id='pagecity']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+                IWebElement child1 = child.FindElement(By.XPath(".//div[@class='stickycontainer']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+                IWebElement child2 = child1.FindElement(By.XPath(".//div[@class='transport']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+
+                // Ora puoi catturare uno screenshot del quinto figlio div
+                Screenshot screenshot = ((ITakesScreenshot)child2).GetScreenshot();
+                screenshot.SaveAsFile($"div_screenshot{num}.png");
+            }
+
+            catch (NoSuchElementException ex)
+            {
+                Console.WriteLine("Uno dei div non è stato trovato: " + ex.Message);
+            }
+
+            finally
+            {
+                // Chiudi il WebDriver
+                driver.Quit();
+                pictureBoxIndicazioni.Image = Image.FromFile($"div_screenshot{num}.png");
+
+                num++;
+            }
+        }
+
+        private void btnInserisci_Click(object sender, EventArgs e)
+        {
+            string a = txtNomePasseggero.Text;
+            string b = txtPaese.Text;
+            string c = textbox2.Text;
+
+            if (string.IsNullOrEmpty(a) || string.IsNullOrEmpty(b) || string.IsNullOrEmpty(c))
+            {
+                MessageBox.Show("Inserisci i dati");        // CONTROLLO SE TUTTE LE TB SONO PIENE
+                return;
+            }
+
+            voli nuovovolo = default;     // CREO NUOVI GIOCATORI
+
+
+            nuovovolo.Nome = a;
+            nuovovolo.LuogoPartenza = b;
+            nuovovolo.LuogoArrivo = c;
+
+            elevoli[num] = nuovovolo;
+            num = num + 1;
+
+            MessageBox.Show("Tutti i dati sono stati inseriti correttamente");
+                        
+            smalltxtNome.Text = txtNomePasseggero.Text;
+            smalltbNVolo.Text = "1SAN6OS9";
+            smalltbPosto.Text = "A6";
+            smalltbGate.Text = "Gate A19";
+            smalltbPartenzaBiglietto.Text = txtPaese.Text;
+            smalltbArrivoBiglietto.Text = textbox2.Text;
+
+            lblNomePasseggeroBiglietto.Text = txtNomePasseggero.Text;
+            lblNumeroVoloBiglietto.Text = "1SAN6OS9";
+            lblPostoBiglietto.Text = "A6";
+            lblGateBiglietto.Text = "Gate A19";
+
+
+
+        }
+
+
+        //--------------------------------------------------------------------------------------------------------------------------------------------
+
+
     }
 
 
