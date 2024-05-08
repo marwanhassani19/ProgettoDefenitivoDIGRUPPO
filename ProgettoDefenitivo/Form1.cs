@@ -23,6 +23,9 @@ using OpenQA.Selenium.Support.UI;
 using ScrapySharp.Extensions;
 using System.Net;
 using System.Xml.Xsl;
+using System.Drawing.Imaging;
+using System.IO;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace ProgettoDefenitivo
 {
@@ -54,7 +57,9 @@ namespace ProgettoDefenitivo
         public Form1()
         {
             InitializeComponent();
-                    
+
+          
+      
             PopulateAirports();
             InitializeListView();
             this.WindowState = FormWindowState.Maximized;
@@ -102,7 +107,7 @@ namespace ProgettoDefenitivo
         }
 
         private voli[] elevoli = new voli[100];      // CREO ELE E DICHIARO NUM
-        
+
 
 
         private void tabPage2_Resize_1(object sender, EventArgs e)
@@ -416,183 +421,6 @@ namespace ProgettoDefenitivo
 
 
 
-        //private void dtPartenza_ValueChanged_1(object sender, EventArgs e)
-        //        {
-        // DateTime selectedDate = dtPartenza.Value;
-
-        //            // Formatta la data nel formato desiderato (anno-mese-giorno) utilizzando la cultura "en-US"
-        //            string formattedDate = selectedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-        //            if (selectedDate < DateTime.Now.AddDays(1))
-        //            {
-        //                lbErroreData.Text = "Il dato deve essere dopo domani.";
-        //                //btnInformazioni.Enabled = false;
-
-        //            
-        //            else
-        //            {
-        //                lbErroreData.Text = "";
-        //            }
-        //        }
-
-        //        private void dtRitorno_ValueChanged_1(object sender, EventArgs e)
-        //        {
-        //DateTime selectedDate2 = dtRitorno.Value;
-
-        //            // Formatta la data nel formato desiderato (anno-mese-giorno) utilizzando la cultura "en-US"
-        //            string formattedDate2 = selectedDate2.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-
-        //            if (selectedDate2 < DateTime.Now.AddDays(1))
-        //            {
-
-        //            }
-        //        }
-
-
-
-
-        //private void btnInformazioni_Click(object sender, EventArgs e)
-
-        //{
-
-        //    DateTime selectedDate = dtPartenza.Value;
-        //    string formattedDate = selectedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-        //    Console.WriteLine("formattedDate: " + formattedDate); // Aggiungi questa linea per il debug
-
-
-
-        //    // Verifica che la data di partenza non sia mai minore di un giorno in più rispetto ad oggi
-        //    if (selectedDate < DateTime.Now.AddDays(1))
-        //    {
-        //        lbErroreData.Text = "Il dato deve essere dopo domani.";
-        //       return;
-        //    }
-        //    else
-        //    {
-        //        lbErroreData.Text = "";
-
-        //    }
-
-        //    //RITORNO
-        //    DateTime selectedDate2 = dtRitorno.Value;
-        //    string formattedDate2 = selectedDate2.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-        //    Console.WriteLine("formattedDate: " + formattedDate2); // Aggiungi questa linea per il debug
-
-
-        //    //// Verifica che la data di ritorno non sia mai minore della data di partenza
-        //    if (selectedDate2 < selectedDate)
-        //    {
-        //        lbErroreData.Text = "Il dato deve essere dopo la data di inizio";
-        //     return;
-        //    }
-        //    else
-        //    {
-        //        lbErroreData.Text = "";
-        //    }
-
-
-
-
-
-        //    // Verifica se è stato selezionato un aeroporto
-        //    if (listView1.SelectedItems.Count > 0)
-        //    {
-        //        // Ottieni il nome e il codice dell'aeroporto selezionato
-        //        partenzaAeroporto = listView1.SelectedItems[0].Text;
-        //        airportCode = listView1.SelectedItems[0].SubItems[1].Text;
-
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Seleziona un aeroporto prima di procedere.");
-        //        return;
-        //    }
-        //    //  string message3 = $"Informazioni:\nPartenza: {airportCode}\nBudget: {budget}\nData di Andata: {formattedDate}\nData di Ritorno: {formattedDate2}";
-        //    // MessageBox.Show(message3, "Dettagli Viaggio", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-        //    // C$"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate2}&budget=150&trip-type-category={tipoViaggio}");
-
-        //    // txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate2}&budget=150&trip-type-category={tipoViaggio}";
-
-
-
-        //        if (rbSpecifica.Checked)
-        //        {
-
-        //            txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate}&budget=150"; 
-
-        //        }
-        //        // Esegui questa parte se non è selezionato nessun elemento dalla ComboBox
-        //        if (rbIntervallo.Checked)
-        //        {
-
-        //            txtLink.Text = $"https://www.ryanair.com/it/it/voli-low-cost/?from={airportCode}&out-from-date={formattedDate}&out-to-date={formattedDate2}&budget=150";
-
-        //        }
-
-
-
-        //    //MessageBox.Show(txtLink.Text);
-
-
-
-        //    string urlScreenVolo = txtLink.Text;
-
-
-
-        //    ScrapingBrowser browser = new ScrapingBrowser();
-        //    browser.AllowAutoRedirect = true;
-        //    browser.AllowMetaRedirect = true;
-        //    // Inizializza il WebDriver di Chrome
-        //    ChromeOptions options = new ChromeOptions();
-        //    options.AddArgument("--window-position=-2000,-2000"); // Imposta la posizione della finestra fuori dallo schermo
-        //    IWebDriver driver = new ChromeDriver(options);
-
-        //    // Naviga verso la pagina web
-        //    driver.Navigate().GoToUrl(txtLink.Text);
-
-        //    try
-        //    {
-        //        //Trova il bottone tramite il selettore CSS, XPath o altri metodi di localizzazione
-        //        var buttonScreenVolo = driver.FindElement(By.CssSelector("div#cookie-popup-with-overlay"));
-        //        var buttonScreenVolo1 = buttonScreenVolo.FindElement(By.CssSelector("div.cookie-popup-with-overlay__box"));
-        //        var buttonScreenVolo2 = buttonScreenVolo1.FindElement(By.CssSelector("div.cookie-popup-with-overlay__buttons"));
-        //        var buttonScreenVolo3 = buttonScreenVolo2.FindElement(By.CssSelector("button.cookie-popup-with-overlay__button"));
-
-
-
-        //        buttonScreenVolo3.Click();
-
-
-
-        //        IWebElement divElement = driver.FindElement(By.XPath("//div[@class='FR']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
-        //        IWebElement child = divElement.FindElement(By.XPath(".//main[@ui-view='mainView']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
-        //        IWebElement child1 = child.FindElement(By.XPath(".//div[@class='farefinder-expanded']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
-        //        IWebElement child2 = child1.FindElement(By.XPath(".//div[@class='container results-container']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
-
-        //        // Ora puoi catturare uno screenshot del quinto figlio div
-        //        Screenshot screenshot = ((ITakesScreenshot)child2).GetScreenshot();
-        //        screenshot.SaveAsFile($"div_screenshot{num}.png");
-        //    }
-
-        //    catch (NoSuchElementException ex)
-        //    {
-        //        Console.WriteLine("Uno dei div non è stato trovato: " + ex.Message);
-        //    }
-
-        //    finally
-        //    {
-        //        // Chiudi il WebDriver
-        //        driver.Quit();
-        //        tabControl.SelectedIndex = 1;
-        //        tabPage2.Visible = true;
-        //        pictureVolo.Image = Image.FromFile($"div_screenshot{num}.png");
-        //        num++;
-        //    }
-
-
-
-        //}
-
         //--------------------------------------------------------------------------------------------------------------------------------------------
 
         private void btnInformazioni_Click(object sender, EventArgs e)
@@ -600,7 +428,7 @@ namespace ProgettoDefenitivo
             // Ottieni la data di partenza
             DateTime selectedDate = dtPartenza.Value;
             string formattedDate = selectedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-            Console.WriteLine("formattedDate: " + formattedDate); // Aggiungi questa linea per il debug
+         
 
             // Verifica che la data di partenza non sia mai minore di un giorno in più rispetto ad oggi
 
@@ -608,7 +436,7 @@ namespace ProgettoDefenitivo
             // Ottieni la data di ritorno
             DateTime selectedDate2 = dtRitorno.Value;
             string formattedDate2 = selectedDate2.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-            Console.WriteLine("formattedDate: " + formattedDate2); // Aggiungi questa linea per il debug
+           
 
             if (rbSpecifica.Checked == true)
             {
@@ -660,7 +488,7 @@ namespace ProgettoDefenitivo
                 return;
             }
 
-            // Costruisci il link in base alle opzioni selezionate
+            // seleziona il link in base alle opzioni selezionate
 
             if (rbSpecifica.Checked)
             {
@@ -694,51 +522,70 @@ namespace ProgettoDefenitivo
             browser.AllowAutoRedirect = true;
             browser.AllowMetaRedirect = true;
             // Inizializza il WebDriver di Chrome
+
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--window-position=-2000,-2000"); // Imposta la posizione della finestra fuori dallo schermo
-            IWebDriver driver = new ChromeDriver(options);
+            options.AddArgument("--headless"); // Esegui il browser senza interfaccia grafica
 
+            var driverService = ChromeDriverService.CreateDefaultService();
+            driverService.HideCommandPromptWindow = true;
+
+            IWebDriver driver = new ChromeDriver(driverService,options);
+            // 
             // Naviga verso la pagina web
             driver.Navigate().GoToUrl(txtLink.Text);
 
             try
             {
-                //Trova il bottone tramite il selettore CSS, XPath o altri metodi di localizzazione
-                var buttonScreenVolo = driver.FindElement(By.CssSelector("div#cookie-popup-with-overlay"));
-                var buttonScreenVolo1 = buttonScreenVolo.FindElement(By.CssSelector("div.cookie-popup-with-overlay__box"));
-                var buttonScreenVolo2 = buttonScreenVolo1.FindElement(By.CssSelector("div.cookie-popup-with-overlay__buttons"));
-                var buttonScreenVolo3 = buttonScreenVolo2.FindElement(By.CssSelector("button.cookie-popup-with-overlay__button"));
+
+                try
+                {
+                    //Trova il bottone tramite il selettore CSS, XPath o altri metodi di localizzazione
+                    var buttonScreenVolo = driver.FindElement(By.CssSelector("div#cookie-popup-with-overlay"));
+                    var buttonScreenVolo1 = buttonScreenVolo.FindElement(By.CssSelector("div.cookie-popup-with-overlay__box"));
+                    var buttonScreenVolo2 = buttonScreenVolo1.FindElement(By.CssSelector("div.cookie-popup-with-overlay__buttons"));
+                    var buttonScreenVolo3 = buttonScreenVolo2.FindElement(By.CssSelector("button.cookie-popup-with-overlay__button"));
 
 
 
-                buttonScreenVolo3.Click();
+                    buttonScreenVolo3.Click();
 
 
 
-                IWebElement divElement = driver.FindElement(By.XPath("//div[@class='FR']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
-                IWebElement child = divElement.FindElement(By.XPath(".//main[@ui-view='mainView']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
-                IWebElement child1 = child.FindElement(By.XPath(".//div[@class='farefinder-expanded']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
-                IWebElement child2 = child1.FindElement(By.XPath(".//div[@class='container results-container']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+                    IWebElement divElement = driver.FindElement(By.XPath("//div[@class='FR']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+                    IWebElement child = divElement.FindElement(By.XPath(".//main[@ui-view='mainView']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+                    IWebElement child1 = child.FindElement(By.XPath(".//div[@class='farefinder-expanded']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
+                    IWebElement child2 = child1.FindElement(By.XPath(".//div[@class='container results-container']")); // Cambia 'tuo_id_div' con l'id effettivo del tuo div
 
-                // Ora puoi catturare uno screenshot del quinto figlio div
-                Screenshot screenshot = ((ITakesScreenshot)child2).GetScreenshot();
-                screenshot.SaveAsFile($"div_screenshot{num}.png");
+                    // Ora puoi catturare uno screenshot del quinto figlio div
+                    Screenshot screenshot = ((ITakesScreenshot)child2).GetScreenshot();
+                    screenshot.SaveAsFile($"div_screenshot{num}.png");
+                }
+
+                catch (NoSuchElementException ex)
+                {
+                    Console.WriteLine("Uno dei div non è stato trovato: " + ex.Message);
+                }
+
+                finally
+                {
+                    // Chiudi il WebDriver
+                    driver.Quit();
+                    tabControl.SelectedIndex = 1;
+                    tabPage2.Visible = true;
+                    pictureVolo.Image = Image.FromFile($"div_screenshot{num}.png");
+                    num++;
+                }
             }
 
-            catch (NoSuchElementException ex)
+            catch
+
             {
-                Console.WriteLine("Uno dei div non è stato trovato: " + ex.Message);
+                MessageBox.Show($"ERRORE NON PREVISTO , riprova con una nuova ricerca");
+                return;
+
             }
 
-            finally
-            {
-                // Chiudi il WebDriver
-                driver.Quit();
-                tabControl.SelectedIndex = 4;
-                tabPage5.Visible = true;
-                pictureVolo.Image = Image.FromFile($"div_screenshot{num}.png");
-                num++;
-            }
         }
 
 
@@ -790,7 +637,12 @@ namespace ProgettoDefenitivo
 
             // Inizializza il WebDriver di Chrome
             ChromeOptions options = new ChromeOptions();
-            options.AddArgument("--start-maximized"); // Massimizza la finestra del browser
+            options.AddArgument("--window-position=-2000,-2000"); // Imposta la posizione della finestra fuori dallo schermo
+            options.AddArgument("--headless"); // Esegui il browser senza interfaccia grafica
+
+            var driverService = ChromeDriverService.CreateDefaultService();
+            driverService.HideCommandPromptWindow = true;
+
             IWebDriver driver = new ChromeDriver(options);
 
             // Naviga verso la pagina web
@@ -925,8 +777,15 @@ namespace ProgettoDefenitivo
 
             // Inizializza il WebDriver di Chrome
             ChromeOptions options = new ChromeOptions();
-            options.AddArgument("--start-maximized"); // Massimizza la finestra del browser
+            options.AddArgument("--window-position=-2000,-2000"); // Imposta la posizione della finestra fuori dallo schermo
+            options.AddArgument("--headless"); // Esegui il browser senza interfaccia grafica
+
+            var driverService = ChromeDriverService.CreateDefaultService();
+            driverService.HideCommandPromptWindow = true;
+
             IWebDriver driver = new ChromeDriver(options);
+            // openQA drive hide cli window
+         
 
             // Naviga verso la pagina web
             driver.Navigate().GoToUrl($"https://www.travel365.it/destinazioni/europa/italia/lombardia/{luogo}/");
@@ -994,7 +853,7 @@ namespace ProgettoDefenitivo
             num = num + 1;
 
             MessageBox.Show("Tutti i dati sono stati inseriti correttamente");
-                        
+
             smalltxtNome.Text = txtNomePasseggero.Text;
             smalltbNVolo.Text = "1SAN6OS9";
             smalltbPosto.Text = "A6";
@@ -1011,12 +870,8 @@ namespace ProgettoDefenitivo
 
         }
 
-
         //--------------------------------------------------------------------------------------------------------------------------------------------
 
-
     }
-
-
 
 }
